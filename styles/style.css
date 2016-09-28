@@ -3,9 +3,17 @@ html, body {
 	margin: 0px;
 }
 
+a {
+	color: white;
+}
+
+a:hover {
+	color: black;
+}
+
 header {
 	background-color: #33ccff;
-	color: #ffffff;
+	color: white;
 	height: 20%;
 	width: 100%;
 }
@@ -22,7 +30,7 @@ header {
 }
 #nav ul li{
 	padding-right: 5px;
-	color: black;
+	color: white;
 	display: inline;
 }
 #login_signup {
@@ -56,7 +64,7 @@ header {
 
 footer {
 	background-color: #33ccff;
-	color: #ffffff;
+	color: white;
 	font-size: 20px;
 	height: 5%;
 	width: 100%;
