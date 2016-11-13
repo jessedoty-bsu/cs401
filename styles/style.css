@@ -14,7 +14,7 @@ a:hover {
 header {
 	background-color: #33ccff;
 	color: white;
-	height: 20%;
+	/*height: 20%;*/
 	width: 100%;
 }
 
@@ -49,7 +49,7 @@ header {
 
 
 
-#content #signup_form p {
+#content #signup_form label {
 	font-weight: bold;
 	margin: 10px 0px 5px 0px;
 }

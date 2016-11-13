@@ -8,33 +8,7 @@
 	</head>
 
 	<body>
-		<header>
-			<div id="logo">
-				<a href="index.html">
-				<img src="images/logo.png" title="Custom logo coming soon">
-				</a>
-				<h1>Jot Record</h1>
-			</div>
-			<div id="nav">
-				<ul>
-					<li><a href="index.html">Home</a></li>
-					<li><a href="main.html">Main (Logged-in View)</a></li>
-					<li><a href="signup.html">Sign-up</a></li>
-					<li><a href="settings.html">Settings</a></li>
-				</ul>
-			</div>
-			<div id="login_signup">
-				<form id="header_form">
-					<input type="text" name="login-email" placeholder="email" />
-					<input type="text" name="login-password" placeholder="password" />
-					<input type="submit" name="login" value="Login" />
-					
-					<a href="signup.html">
-					<button id="signup_button" type="button">Sign-up</button>
-					</a>
-				</form>
-			</div>
-		</header>
+		<?php include_once('templates/header.php')?>
 		
 		<div id="content">
 			<p>Having some troubles styling this. I think the layout makes sense though. Hopefully you can kind of see what I'm shooting for.</p>
