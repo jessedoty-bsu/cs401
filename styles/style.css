@@ -57,6 +57,10 @@ header {
 	margin: 15px 0px;
 }
 
+.error {
+	color: red;
+}
+
 #content {
 	padding: 20px 50px;
 	height:75%;

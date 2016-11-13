@@ -7,26 +7,41 @@ $email = (isset($_POST["signup-email"])) ? $_POST["signup-email"] : "";
 $pass = (isset($_POST["signup-password"])) ? $_POST["signup-password"] : "";
 $conf_pass = (isset($_POST["confirm-signup-password"])) ? $_POST["confirm-signup-password"] : "";
 $errors = array();
-$_SESSION['errors'] = $errors;
+$presets = array();
 
-//If both are true sanitize the data and add the user to the database. Then redirect them to their logged in view
-//Potentially set session variable with user credentials so lists can be loaded when they hit that page
-if(validate_email($email) && validate_passwords($pass, $conf_pass)) {
-   //$dao->new_user($email, $pass);
-    header('Locaction: main.php');
+/*
+ * Validate email and password given.
+ * If there are errors redirect them back to the signup page, otherwise create the new user and send them to the logged in page (main.php)
+ */
+validate_email($email);
+validate_passwords($pass, $conf_pass);
+
+if(!empty($errors)) {
+    //There was an error so save information the user entered
+    $presets['email'] = htmlspecialchars($email);
+    $_SESSION['presets'] = $presets;
+
+    //Store errors
+    $_SESSION['errors'] = $errors;
+
+    header('Location: ../signup.php');
 }
 else {
-    header('Locaction: signup.php');
+    $dao->new_user($email, $pass);
+    header('Location: ../main.php');
 }
 
 /*
  * Validates email given is valid
  */
 function validate_email($email) {
+    global $errors;
+
     //Email must have been given
     if(strlen($email) != 0) {
         //Email must match a general email format
         if(preg_match("/^.+@.+\..[A-Za-z]{1,5}$/", $email)) {
+            unset($_SESSION['errors']['email']);
             return true;
         }
         //Email does not meet validation requirements
@@ -46,12 +61,16 @@ function validate_email($email) {
  * Validate password(s) given are valid and match
  */
 function validate_passwords($pass, $conf_pass) {
+    global $errors;
+
     //Password was given
-    if(($len = strlen($pass)) != 0) {
+    $len = strlen($pass);
+    if($len != 0) {
         //Password meets requirement of being 6 characters long
         if($len >= 6) {
             //Both passwords match
             if($pass === $conf_pass) {
+                unset($_SESSION['errors']['password']);
                 return true;
             } else {
                 $errors['password'] = "Passwords do not match";
@@ -66,16 +85,3 @@ function validate_passwords($pass, $conf_pass) {
         return false;
     }
 }
-/*
-Check email is given
-    Validate email
-
-Check pass is given
-    Check pass is 6 characters long
-    Check confirm-pass is given
-       Check it matches other pass
-
-If all succeed, add new user to db and redirect to logged in page
-*/
-
-
