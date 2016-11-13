@@ -18,7 +18,7 @@ validate_passwords($pass, $conf_pass);
 
 if(!empty($errors)) {
     //There was an error so save information the user entered
-    $presets['email'] = htmlspecialchars($email);
+    if(strlen($email) != 0) $presets['email'] = htmlspecialchars($email);
     $_SESSION['presets'] = $presets;
 
     //Store errors
