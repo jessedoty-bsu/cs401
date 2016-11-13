@@ -1,6 +1,11 @@
 <?php
 
 class Dao {
+    /*
+  private $host = "localhost";
+  private $db = "jotrecord";
+  private $user = "user";
+  private $pass = "password"; */
 
   private $host = "us-cdbr-iron-east-03.cleardb.net";
   private $db = "heroku_4d19e91f7d43b1a";
@@ -22,14 +27,16 @@ class Dao {
       $newUserQuery = "INSERT INTO person 
                           (email, password, prof_pic)
                           VALUES 
-                          (:email, :password, LOAD_FILE(:prof_pic))";
+                          (:email, :password, :prof_pic)";
       $q = $cxn->prepare($newUserQuery);
       $q->bindParam(":email", $email);
       $q->bindParam(":password", $password);
-      $imgPath = "images/avatar.png";
-      $q->bindParam(":prof_pic", $imgPath);
+
+      //Default profile picture
+      $imgPath = "/images/avatar.png";
+      $blob = fopen($imgPath, 'rb');
+      $q->bindParam(":prof_pic", $blob, PDO::PARAM_LOB);
 
       $q->execute();
   }
-
 }
