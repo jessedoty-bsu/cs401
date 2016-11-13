@@ -1,21 +1,20 @@
 <?php
 
 class Dao {
+    /*
   private $host = "localhost";
   private $db = "jotrecord";
   private $user = "user";
-  private $pass = "password";
+  private $pass = "password"; */
 
-    /*
-  private $host = "us-cdbr-iron-east-03.cleardb.net";
+  private $host = "us-cdbr-iron-east-04.cleardb.net";
   private $db = "heroku_4d19e91f7d43b1a";
   private $user = "b3a51b586d0bd2";
-  private $pass = "a7e9651e"; */
+  private $pass = "a7e9651e";
 
   public function getConnection () {
     return
-      new PDO("mysql:host={$this->host};dbname={$this->db}", $this->user,
-          $this->pass);
+      new PDO("mysql:host={$this->host};dbname={$this->db}", $this->user, $this->pass);
   }
 
 
