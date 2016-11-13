@@ -5,7 +5,7 @@ class Dao {
   private $host = "localhost";
   private $db = "jotrecord";
   private $user = "user";
-  private $pass = "password"; */
+  private $pass = "password";*/
 
   private $host = "us-cdbr-iron-east-04.cleardb.net";
   private $db = "heroku_4d19e91f7d43b1a";
@@ -24,20 +24,17 @@ class Dao {
   public function new_user($email, $password) {
       $cxn = $this->getConnection();
       $newUserQuery = "INSERT INTO person 
-                          (email, password)
+                          (email, password, prof_pic)
                           VALUES 
-                          (:email, :password)";
+                          (:email, :password, :prof_pic)";
       $q = $cxn->prepare($newUserQuery);
       $q->bindParam(":email", $email);
       $q->bindParam(":password", $password);
 
       //Default profile picture
-      /*
-       * This works locally but kills heroku for a bit if it's executed. Removing it for now.
       $imgPath = "/images/avatar.png";
       $blob = fopen($imgPath, 'rb');
       $q->bindParam(":prof_pic", $blob, PDO::PARAM_LOB);
-      */
 
       $q->execute();
   }
