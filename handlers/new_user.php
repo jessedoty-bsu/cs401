@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../dao.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "../dao.php";
 $dao = new Dao();
 
 $email = (isset($_POST["signup-email"])) ? $_POST["signup-email"] : "";
