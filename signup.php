@@ -14,14 +14,15 @@
 		<?php include_once('templates/header.php')?>
 		
 		<div id="content">
-			<form id="signup_form" name="signup_form" action="handlers/user_handler.php" method="POST">
+			<form id="signup_form" name="signup_form" action="handlers/new_user.php" method="POST">
 				<label for="email">Email Address:</label><br />
 				<input id="email" type="text" name="signup-email" placeholder="your@email.com"
 					<?php
 						if(isset($_SESSION['presets']['email'])) {
 							echo "value=\"" . $_SESSION['presets']['email'] . "\"";
 						}
-					?>>
+					?>
+				>
 				<?= get_error("email") ?>
 
 				<br />

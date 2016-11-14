@@ -33,7 +33,7 @@ header {
 	color: white;
 	display: inline;
 }
-#login_signup {
+#login_signup #user_portal {
 	display: inline-block;
 	width: 18%;
 	text-align: right;
@@ -42,12 +42,11 @@ header {
 #header_form input{
 	width: 50%;
 }
-#signup_button {
+
+#signup_button #login_button {
 	margin-top: 10px;
 	width: 50%;
 }
-
-
 
 #content #signup_form label {
 	font-weight: bold;

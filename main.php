@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(!$_SESSION['access']) {
+	header("Location: index.php");
+}
+?>
+
 <html>
 	<title>Jot Record: A Collaborative Checklist Platform</title>
 	
@@ -11,7 +18,7 @@
 		<?php include_once('templates/header.php')?>
 		
 		<div id="content">
-			<p>Having some troubles styling this. I think the layout makes sense though. Hopefully you can kind of see what I'm shooting for.</p>
+        <p>Welcome <?= $_SESSION['user'] ?>!</p>
 			<div id="list_menu">
 				<div id="list_title">
 					<p>List Title (Permissions)</p>
@@ -38,8 +45,6 @@
 				</div>
 			</div>
 		</div>
-		
-		<footer>
-			<p>Copyright &copy; 2016 Jesse Doty. All Rights Reserved.</p>
-		</footer>
+
+		<?php include_once('templates/footer.php')?>
 </html>

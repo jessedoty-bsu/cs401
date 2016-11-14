@@ -38,4 +38,33 @@ class Dao {
 
       $q->execute();
   }
+
+  /*
+   * Validate user credentials
+   *
+   * @return true if user exists and password given is correct, false otherwise
+   */
+  public function validate_user($email, $password) {
+      $cxn = $this->getConnection();
+      $validate_user = "SELECT email, password FROM person WHERE email = :email";
+
+      $q = $cxn->prepare($validate_user);
+      $q->bindParam(":email", $email);
+      $q->execute();
+
+      $row = $q->fetch();
+
+      //Does user exist
+      if(!$row) {
+          return false;
+      }
+
+      //Did they provide the correct password
+      if($row['password'] == $password) {
+         return true;
+      }
+      else {
+          return false;
+      }
+  }
 }

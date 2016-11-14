@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../dao.php";
+require_once "/../dao.php";
 $dao = new Dao();
 
 $email = (isset($_POST["signup-email"])) ? $_POST["signup-email"] : "";
@@ -28,6 +28,9 @@ if(!empty($errors)) {
 }
 else {
     $dao->new_user($email, $pass);
+    unset($_SESSION['errors']);
+    $_SESSION['user'] = $email;
+    $_SESSION['access'] = true;
     header('Location: ../main.php');
 }
 

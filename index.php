@@ -21,8 +21,6 @@
     </p>
 </div>
 
-<footer>
-    <p>Copyright &copy; 2016 Jesse Doty. All Rights Reserved.</p>
-</footer>
+<?php include_once('templates/footer.php')?>
 </body>
 </html>
