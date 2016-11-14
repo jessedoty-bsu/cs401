@@ -2,7 +2,7 @@
 if(session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once "/../handlers/user.php";
+require_once "../handlers/user.php";
 //Store current page name
 $_SESSION['page'] = $_SERVER['PHP_SELF'];
 ?>
