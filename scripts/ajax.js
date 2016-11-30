@@ -5,14 +5,14 @@ function refreshList() {
    $("#list_container").load(location.href+" #list_container>*","");
 }
 
-function newList(id) {
+function newList(path) {
    var content = prompt("Please enter the item's name.", "New List");
    content = content ? content:"New List";
 
    var value = { "new_list_title":content };
    $.ajax({
       type: "POST",
-      url: "../handlers/list.php",
+      url: path + "/handlers/list.php",
       data: value,
       success: function () {
          //Prepend button for new list to list_ul
@@ -32,7 +32,7 @@ function newList(id) {
    });
 }
 
-function newItem() {
+function newItem(path) {
    var content = prompt("Please enter the item's name.", "New Item");
    content = content ? content:"New Item";
 
@@ -40,7 +40,7 @@ function newItem() {
    var values = { "list_id":listID, "new_item_content":content };
    $.ajax({
       type: "POST",
-      url: "../handlers/list.php",
+      url: path + "/handlers/list.php",
       data: values,
       success: function () {
          //Refresh list view
@@ -51,7 +51,5 @@ function newItem() {
       }
    });
 }
-
-$("#item_list").append()
 
 

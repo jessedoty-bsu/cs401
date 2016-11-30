@@ -5,6 +5,7 @@ if(!$_SESSION['access']) {
 }
 require_once $_SERVER['DOCUMENT_ROOT'] . "/handlers/list.php";
 
+$path = $_SERVER['DOCUMENT_ROOT'];
 $listObj = new CheckList($_SESSION['user']);
 $lists = $listObj->getAllLists();
 $currentList = $lists ? $lists[0] : false;
@@ -41,10 +42,10 @@ $currentList = $lists ? $lists[0] : false;
 					<ul id="list_ul">
                         <?php
 							foreach($lists as $list) {
-								echo "<li><button id=\"". $list['title'] ."\" onclick=\"switchToList(this.id)\">".$list['title']."</button></li>";
+								echo "<li><button id=\"". $list['title'] ."\" onclick=\"switchToList(this.id, ". $path .")\">".$list['title']."</button></li>";
 							}
 						?>
-						<li><button id="new_list" onclick="newList()">Create List</button></li>
+						<li><button id="new_list" onclick="newList(<?php $path ?>)">Create List</button></li>
 					</ul>
 				</div>
 				<div id="list_container">
@@ -64,7 +65,7 @@ $currentList = $lists ? $lists[0] : false;
 								$i++;
 							}
 						?>
-							<li><button onclick="newItem()">Create Item</button></li>
+							<li><button onclick="newItem(<?php $path ?>)">Create Item</button></li>
 						</ul>
 					<?php } ?>
 					</form>
