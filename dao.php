@@ -67,4 +67,100 @@ class Dao {
           return false;
       }
   }
+
+
+  /*
+   * Get all lists related to a user sorted by most recent list created, with their items sorted by oldest to newest
+   *
+   * @param $user - the user's email address
+   * @return all lists returned by the query
+   */
+  public function getAllLists($user) {
+      $cxn = $this->getConnection();
+      $listsQuery = "SELECT * 
+                      FROM person AS p 
+                      JOIN person_has_list AS phl ON p.person_id = phl.person_id
+                      JOIN list AS l ON phl.list_id = l.list_id
+                      WHERE p.email = :email
+                      ORDER BY l.creation_date DESC;";
+
+      $q = $cxn->prepare($listsQuery);
+      $q->bindParam(":email", $user);
+      $q->execute();
+
+      return $q->fetchAll();
+  }
+
+  /*
+   * Get all items for a given list
+   *
+   * @param $listID - id of list
+   * @return all items returned by the query
+   */
+  public function getListItems($listID) {
+     $cxn = $this->getConnection();
+     $listQuery = "SELECT *
+                    FROM list AS l 
+                    JOIN list_item AS li ON l.list_id = li.list_id
+                    ORDER BY li.creation_date ASC;";
+
+     $q = $cxn->prepare($listQuery);
+     $q->execute();
+
+      return $q->fetchAll();
+  }
+
+  /*
+   * Create list linked to the user given
+   *
+   * @param $user - user's email who is creating the list
+   * @param $title - title of the new list
+   */
+  public function createList($user, $title) {
+      /*
+       * insert new list
+       * insert new person_has_list
+       */
+      $cxn = $this->getConnection();
+
+      //Get person_id for the given user
+      $idQuery = "SELECT person_id FROM person WHERE email = :email";
+      $q = $cxn->prepare($idQuery);
+      $q->bindParam(":email", $user);
+      $q->execute();
+      $fetchedUser = $q->fetch();
+      $userID = $fetchedUser['person_id'];
+
+      //Insert list into database
+      $listQuery = "INSERT INTO list (title) VALUE (:title);";
+      $q = $cxn->prepare($listQuery);
+      $q->bindParam(":title", $title);
+      $q->execute();
+      $newListID = $cxn->lastInsertId();
+
+
+      //Build reference between the user and new list
+      $personQuery = "INSERT INTO person_has_list (person_id, list_id) VALUE (:person_id, :list_id);";
+      $q = $cxn->prepare($personQuery);
+      $q->bindParam(":person_id", $userID);
+      $q->bindParam(":list_id", $newListID);
+      $q->execute();
+  }
+
+  /*
+   * Add a list item to a given list
+   *
+   * @param listID - id of the list we're adding to
+   * @param itemContent - title of the new list item
+   */
+  public function addItem($listID, $itemContent) {
+      $cxn = $this->getConnection();
+      $itemQuery = "INSERT INTO list_item (content, list_id) VALUES (:content, :listID);";
+
+      $q = $cxn->prepare($itemQuery);
+      $q->bindParam(":content", $itemContent);
+      $q->bindParam(":listID", $listID);
+
+      $q->execute();
+  }
 }

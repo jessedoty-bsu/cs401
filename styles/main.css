@@ -24,13 +24,14 @@
 	width: 100%;
 } 
 
-#tabs {
+#list_tabs {
 	display: inline-block;
 	width: 15%;
 	text-align: right;
 }
-#tabs ul {
-	list-style: none;
+
+ul {
+	list-style-type: none;
 }
 
 #list_container {
