@@ -5,7 +5,7 @@ function refreshList() {
    $("#list_container").load(location.href+" #list_container>*","");
 }
 
-function newList(path) {
+function newList() {
    var content = prompt("Please enter the item's name.", "New List");
    content = content ? content:"New List";
    console.log("Adding new list.");
@@ -13,7 +13,7 @@ function newList(path) {
    var value = { "new_list_title":content };
    $.ajax({
       type: "POST",
-      url: path + "/handlers/list.php",
+      url: "../handlers/list.php",
       data: value,
       success: function () {
          //Prepend button for new list to list_ul
@@ -33,7 +33,7 @@ function newList(path) {
    });
 }
 
-function newItem(path) {
+function newItem() {
    var content = prompt("Please enter the item's name.", "New Item");
    content = content ? content:"New Item";
    console.log("Adding new item.");
@@ -42,7 +42,7 @@ function newItem(path) {
    var values = { "list_id":listID, "new_item_content":content };
    $.ajax({
       type: "POST",
-      url: path + "/handlers/list.php",
+      url: "../handlers/list.php",
       data: values,
       success: function () {
          //Refresh list view
