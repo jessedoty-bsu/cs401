@@ -8,6 +8,7 @@ function refreshList() {
 function newList(path) {
    var content = prompt("Please enter the item's name.", "New List");
    content = content ? content:"New List";
+   console.log("Adding new list.");
 
    var value = { "new_list_title":content };
    $.ajax({
@@ -35,6 +36,7 @@ function newList(path) {
 function newItem(path) {
    var content = prompt("Please enter the item's name.", "New Item");
    content = content ? content:"New Item";
+   console.log("Adding new item.");
 
    var listID = $("#list_id").val();
    var values = { "list_id":listID, "new_item_content":content };
