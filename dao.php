@@ -1,17 +1,17 @@
 <?php
 
 class Dao {
-    /*
   private $host = "localhost";
   private $db = "jotrecord";
   private $user = "user";
-  private $pass = "password";*/
+  private $pass = "password";
 
-    
+
+    /*
   private $host = "us-cdbr-iron-east-04.cleardb.net";
   private $db = "heroku_4d19e91f7d43b1a";
   private $user = "b3a51b586d0bd2";
-  private $pass = "a7e9651e";
+  private $pass = "a7e9651e";*/
 
   public function getConnection () {
     return
@@ -103,9 +103,11 @@ class Dao {
      $listQuery = "SELECT *
                     FROM list AS l 
                     JOIN list_item AS li ON l.list_id = li.list_id
+                    WHERE l.list_id = :listID
                     ORDER BY li.creation_date ASC;";
 
      $q = $cxn->prepare($listQuery);
+      $q->bindParam(":listID", $listID);
      $q->execute();
 
       return $q->fetchAll();
@@ -118,10 +120,6 @@ class Dao {
    * @param $title - title of the new list
    */
   public function createList($user, $title) {
-      /*
-       * insert new list
-       * insert new person_has_list
-       */
       $cxn = $this->getConnection();
 
       //Get person_id for the given user
@@ -162,6 +160,49 @@ class Dao {
       $q->bindParam(":content", $itemContent);
       $q->bindParam(":listID", $listID);
 
+      $q->execute();
+  }
+
+  /*
+   * Toggle the status of checked for a given item
+   *
+   * @param itemID - id of item to be toggled
+   * @param checked - current status of item
+   */
+  public function toggleChecked($itemID, $checked) {
+      $cxn = $this->getConnection();
+
+      //Toggle checked status of the item
+      $checked = $checked ? 0:1;
+
+      $itemQuery = "UPDATE list_item SET checked = :checked WHERE li_id = :itemID;";
+
+
+      $q = $cxn->prepare($itemQuery);
+      $q->bindParam(":checked", $checked);
+      $q->bindParam(":itemID", $itemID);
+
+      $q->execute();
+  }
+
+
+  public function share($user, $listID) {
+      $cxn = $this->getConnection();
+
+      //Get person_id for the given user
+      $idQuery = "SELECT person_id FROM person WHERE email = :email";
+      $q = $cxn->prepare($idQuery);
+      $q->bindParam(":email", $user);
+      $q->execute();
+      $fetchedUser = $q->fetch();
+      $userID = $fetchedUser['person_id'];
+      //TODO return error to ajax that the user does not exist
+
+      //Build reference between the user and new list
+      $personQuery = "INSERT INTO person_has_list (person_id, list_id) VALUE (:person_id, :list_id);";
+      $q = $cxn->prepare($personQuery);
+      $q->bindParam(":person_id", $userID);
+      $q->bindParam(":list_id", $listID);
       $q->execute();
   }
 }

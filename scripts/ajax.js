@@ -1,14 +1,32 @@
 window.onload = function() { setInterval(refreshList, 3000); };
 
+/* Refresh list title and item list view */
 function refreshList() {
+   refreshListTitle();
+   refreshListTabs();
+   refreshItems();
+}
+
+/* Refresh list title */
+function refreshListTitle() {
    $("#list_title").load(location.href+" #list_title>*","");
+}
+
+/* Refresh item list view */
+function refreshItems() {
    $("#list_container").load(location.href+" #list_container>*","");
 }
 
+/* Refresh list tabs */
+function refreshListTabs() {
+   $("#list_tabs").load(location.href+" #list_tabs>*","");
+}
+
+/* Add a new list*/
 function newList() {
    var content = prompt("Please enter the item's name.", "New List");
    content = content ? content:"New List";
-   console.log("Adding new list.");
+   console.log("Adding new list: " + content);
 
    var value = { "new_list_title":content };
    $.ajax({
@@ -17,14 +35,14 @@ function newList() {
       data: value,
       success: function () {
          //Prepend button for new list to list_ul
-         $("#list_ul").prepend(
-             "<li><button id=\"" + content + "\">" + content + "</button></li>"
-         );
+         // $("#list_ul").prepend(
+         //     "<li><button id=\"" + content + "\">" + content + "</button></li>"
+         // );
 
          //Refresh list view
          refreshList();
 
-         //Load share options since they have become enabled
+         //Reload share options since they have become enabled
          $("#share_options").load(location.href+" #share_options>*","");
       },
       error: function () {
@@ -33,20 +51,20 @@ function newList() {
    });
 }
 
-function newItem() {
+/* Add a new item to a list*/
+function newItem(id) {
    var content = prompt("Please enter the item's name.", "New Item");
    content = content ? content:"New Item";
    console.log("Adding new item.");
 
-   var listID = $("#list_id").val();
-   var values = { "list_id":listID, "new_item_content":content };
+   var values = { "list_id":id, "new_item_content":content };
    $.ajax({
       type: "POST",
       url: "../handlers/list.php",
       data: values,
       success: function () {
          //Refresh list view
-         refreshList();
+         refreshItems();
       },
       error: function () {
          alert("New item failed.");
@@ -54,4 +72,52 @@ function newItem() {
    });
 }
 
+function toggleChecked(id, checked) {
+   console.log(id + " " + checked);
+   var values = { "item_id":id, "checked":checked };
+   $.ajax({
+      type: "POST",
+      url: "../handlers/list.php",
+      data: values,
+      success: function () {
+         refreshItems();
+      },
+      error: function () {
+         alert("Item check toggle failed.");
+      }
+   });
+}
 
+function switchToList(id) {
+   var values = { "list_id":id };
+   $.ajax({
+      type: "POST",
+      url: "../handlers/list.php",
+      data: values,
+      success: function () {
+         refreshList();
+      },
+      error: function () {
+         alert("List view switch failed.");
+      }
+   });
+}
+
+function share(listID) {
+   var user = prompt("Enter the email address of the user you would like to share this list with.");
+   if(!user) {
+      alert("Error: No email address was entered.");
+      return false;
+   }
+
+   var values = { "user":user, "share_list_id":listID };
+   $.ajax({
+      type: "POST",
+      url: "../handlers/list.php",
+      data: values,
+      success: function () {},
+      error: function () {
+         alert("List view switch failed.");
+      }
+   });
+}

@@ -7,28 +7,22 @@ $user = $_SESSION['user'];
 
 $dao = new Dao();
 if(isset($_POST['new_list_title'])) {
-    $dao->createList($user, $title);
+    $dao->createList($user, $_POST['new_list_title']);
 }
 elseif(isset($_POST['new_item_content'])) {
     $dao->addItem($_POST['list_id'], $_POST['new_item_content']);
 }
-
-class CheckList {
-
-    private $dao;
-    private $user;
-
-    public function __construct($user) {
-       $this->dao = new Dao();
-       $this->user = $user;
+elseif(isset($_POST['item_id']) && isset($_POST['checked'])) {
+    $dao->toggleChecked($_POST['item_id'], $_POST['checked']);
+}
+elseif(isset($_POST['list_id'])) {
+    $newListId = $_POST['list_id'];
+    foreach($_SESSION['lists'] as $list) {
+        if($list['list_id'] == $newListId) {
+            $_SESSION['currentList'] = $list;
+        }
     }
-
-
-    public function getAllLists() {
-        return $this->dao->getAllLists($this->user);
-    }
-
-    public function getListItems($listID) {
-        return $this->dao->getListItems($listID);
-    }
+}
+elseif(isset($_POST['share_list_id'])) {
+    $dao->share($_POST['user'], $_POST['share_list_id']);
 }

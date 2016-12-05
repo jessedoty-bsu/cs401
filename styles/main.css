@@ -46,5 +46,15 @@ ul {
 	width: 25%;
 }
 
+button {
+	margin: 1px;
+	background-color: white;
+	color: black;
+}
+
+.list_button.current_list {
+	background-color: #d9d9d9;
+}
+
 
 
