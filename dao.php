@@ -30,7 +30,9 @@ class Dao {
                           (:email, :password, :prof_pic)";
       $q = $cxn->prepare($newUserQuery);
       $q->bindParam(":email", $email);
-      $q->bindParam(":password", $password);
+      //Encrypt password. Default algorithm is bcrypt and the function automatically salts it
+      $encryptedPass = password_hash($password, PASSWORD_DEFAULT);
+      $q->bindParam(":password", $encryptedPass);
 
       //Default profile picture
       $imgPath = "/images/avatar.png";
@@ -61,7 +63,8 @@ class Dao {
       }
 
       //Did they provide the correct password
-      if($row['password'] == $password) {
+      //Check the password given against the stored hash
+      if(password_verify($password, $row['password'])) {
          return true;
       }
       else {
@@ -144,6 +147,7 @@ class Dao {
       $q->bindParam(":person_id", $userID);
       $q->bindParam(":list_id", $newListID);
       $q->execute();
+
   }
 
   /*
